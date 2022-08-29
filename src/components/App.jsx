@@ -1,29 +1,33 @@
 import React, { useState } from "react";
 
 function App() {
-  const [fname, setName1] = useState("");
-  const [headingText1, setHeading1] = useState("");
-
-  const [lname, setName2] = useState("");
-  const [headingText2, setHeading2] = useState("");
+  const [fullName, setFullName] = useState({
+    fName: "",
+    lName: ""
+  });
 
   function handleChange(event) {
-    setName1(event.target.value);
-  }
+    const { value, name } = event.target;
 
-  function handleChange2(event) {
-    setName2(event.target.value);
-  }
-
-  function handleClick() {
-    setHeading1(fname);
-    setHeading2(lname);
+    setFullName((prevValue) => {
+      if (name === "fName") {
+        return {
+          fName: value,
+          lName: prevValue.lName
+        };
+      } else if (name === "lName") {
+        return {
+          fName: prevValue.fName,
+          lName: value
+        };
+      }
+    });
   }
 
   return (
     <div className="container">
       <h1>
-        Hello {headingText1} {headingText2}
+        Hello {fullName.fName} {fullName.lName}
       </h1>
       <form>
         <input
@@ -31,16 +35,16 @@ function App() {
           type="text"
           name="fName"
           placeholder="First Name"
-          value={fname}
+          value={fullName.fName}
         />
         <input
-          onChange={handleChange2}
+          onChange={handleChange}
           type="text"
           name="lName"
           placeholder="Last Name"
-          value={lname}
+          value={fullName.lName}
         />
-        <button onClick={handleClick}>Submit</button>
+        <button>Submit</button>
       </form>
     </div>
   );
